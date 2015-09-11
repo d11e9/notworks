@@ -1,0 +1,66 @@
+<div>
+    <div ng-model="settings">
+        RPC: <input type="text" value="{{settings.rpc}}"><br>
+        payoutTime: <input type="text" value="{{settings.payoutTime}}"><br>
+        bettingTime: <input type="text" value="{{settings.bettingTime}}"><br>
+        totalBalance: <input type="text" value="{{settings.totalBalance}}"><br>
+        working node: <input type="text" value="{{settings.workingNode}}"><br>
+        <input type="button" value="connect" ng-click="connectMyNode()"><br>
+        <input type="button" value="init contract" ng-click="initContract()"><br>
+        <input type="button" value="UPLOAD Contract to my node" ng-click="uploadContract()"><br>
+        <input type="button" value="Instantiate Contract from working node" ng-click="instantiate()"><br><br><br>
+
+
+        games count: <input type="input" value="{{settings.gamesCount}}">
+        <input type="button" value="create new Lotto" ng-click="newLotto()"><br>
+
+    </div>
+    <br><br>
+
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>LottoId</th>
+            <th>balance</th>
+            <th>bet delay</th>
+            <th>pay delay</th>
+            <th>betters count</th>
+            <th>bet price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="lotto in lottoList">
+            <td>
+                {{lotto.LottoId}}
+            </td>
+            <td>
+                {{lotto.balance}}
+            </td>
+            <td>
+                {{lotto.betDelay}}
+            </td>
+            <td>
+                {{lotto.payDelay}}
+            </td>
+            <td>
+                {{lotto.bettersCount}}
+            </td>
+            <td>
+                {{lotto.betPrice}}
+            </td>
+        </tr>
+
+        </tbody>
+
+    </table>
+
+    <br><br><br>
+    play lotto id: <input type="text" value="{{settings.currentLottoId}}"><br>
+    <input type="button" value="make bet" ng-click="bet()"><br><br><br>
+
+   topTen:<span ng-repeat="addr in topTen">
+    {{addr}}
+</span>
+
+</div>
