@@ -56,7 +56,8 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
                         console.log('Contract transaction sent! TransactionHash: ' + contract.transactionHash + ' waiting to be mined...');
                     } else {
                         console.log('Contract mined! Address: ' + contract.address);
-                        console.log(contract);
+                        $scope.instance = $scope.abiTest.at(contract.address);
+                        console.log(contract, $scope.instance);
                     }
                 }
             }
@@ -86,16 +87,16 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
         }]);
     };
     $scope.newLotto = function () {
-        $scope.instance.plus.call({
-            from: web3.eth.coinbase,
-            gas: 2000000
-        }, function (err, data) {
+        $scope.instance.plus.call(function (err, data) {
             console.log(err);
             console.log(data.toString());
             console.log(data);
 
         });
-        $scope.instance.increment.call(function (err, data) {
+        $scope.instance.increment.sendTransaction({
+            from: web3.eth.coinbase,
+            gas: 2000000
+        }, function (err, data) {
             console.log(err);
             console.log(data.toString());
             console.log(data);
@@ -139,6 +140,7 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
     }
     $scope.instantiate = function () {
         $scope.instance = $scope.abiTest.at($scope.settings.workingNode);
+        console.log( $scope.instance )
 
     }
 
