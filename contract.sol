@@ -1,18 +1,17 @@
 contract LottoContext{
-    uint counter;
+    uint public counter;
+    event Incremented( address by, uint counter );
     
     function LottoContext(){
         counter=3;
     }
     
-   function plus()public returns (uint){
+   function plus() constant returns (uint){
        return 10;
    }
    
-    function increment()public {
+    function increment() public {
         counter++;
-   }
-   function getCounter()public returns (uint){
-       return counter;
+        Incremented( msg.sender, counter );
    }
 }

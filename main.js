@@ -48,7 +48,7 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
         $scope.newInstance = $scope.abiTest.new(
             {
                 from: web3.eth.accounts[0],
-                data: '60606040525b60036000600050819055505b60c980601e6000396000f30060606040526000357c01000000000000000000000000000000000000000000000000000000009004806318b0c3fd14604b5780638ada066e14606a578063d09de08a146089576049565b005b60546004506094565b6040518082815260200191505060405180910390f35b607360045060b8565b6040518082815260200191505060405180910390f35b609260045060a1565b005b6000600a9050609e565b90565b60006000818150548092919060010191905055505b565b6000600060005054905060c6565b9056',
+                data: '60606040525b60036000600050819055505b610126806100206000396000f30060606040526000357c01000000000000000000000000000000000000000000000000000000009004806318b0c3fd1461004f57806361bc221a14610070578063d09de08a146100915761004d565b005b61005a60045061009e565b6040518082815260200191505060405180910390f35b61007b6004506100ac565b6040518082815260200191505060405180910390f35b61009c6004506100b5565b005b6000600a90506100a9565b90565b60006000505481565b60006000818150548092919060010191905055507f38ac789ed44572701765277c4d0970f2db1c1a571ed39e84358095ae4eaa542033600060005054604051808373ffffffffffffffffffffffffffffffffffffffff1681526020018281526020019250505060405180910390a15b56',
                 gas: 1000000
             }, function (e, contract) {
                 if (!e) {
@@ -58,6 +58,16 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
                         console.log('Contract mined! Address: ' + contract.address);
                         $scope.instance = $scope.abiTest.at(contract.address);
                         console.log(contract, $scope.instance);
+
+                        // how to get events
+
+                        $scope.instance.allEvents().watch(function(err, resp){
+                            if (!err) {
+                                console.log( "Live events from the blockchain!", resp)
+                            } else {
+                                console.log( err)
+                            }
+                        })
                     }
                 }
             }
@@ -69,22 +79,7 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
     }
 
     $scope.initContract = function () {
-        $scope.abiTest = web3.eth.contract([{
-            "constant": false,
-            "inputs": [],
-            "name": "plus",
-            "outputs": [{"name": "", "type": "uint256"}],
-            "type": "function"
-        }, {
-            "constant": false,
-            "inputs": [],
-            "name": "getCounter",
-            "outputs": [{"name": "", "type": "uint256"}],
-            "type": "function"
-        }, {"constant": false, "inputs": [], "name": "increment", "outputs": [], "type": "function"}, {
-            "inputs": [],
-            "type": "constructor"
-        }]);
+        $scope.abiTest = web3.eth.contract([{"constant":true,"inputs":[],"name":"plus","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":true,"inputs":[],"name":"counter","outputs":[{"name":"","type":"uint256"}],"type":"function"},{"constant":false,"inputs":[],"name":"increment","outputs":[],"type":"function"},{"inputs":[],"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"by","type":"address"},{"indexed":false,"name":"counter","type":"uint256"}],"name":"Incremented","type":"event"}]);
     };
     $scope.newLotto = function () {
         $scope.instance.plus.call(function (err, data) {
@@ -102,7 +97,7 @@ mainModule.controller("mainC", ['$scope', '$http', '$interval', function ($scope
             console.log(data);
 
         });
-        var ctn = $scope.instance.getCounter.call(function (err, data) {
+        var ctn = $scope.instance.counter.call(function (err, data) {
             console.log(err);
             console.log(data.toString());
             console.log(data);
